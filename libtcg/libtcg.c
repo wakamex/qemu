@@ -119,6 +119,7 @@ ASSERT_CONSTANT(PLUGIN);
 
 typedef struct LibTcgContext {
     CPUState *cpu;
+    TranslationBlock tb;
 } LibTcgContext;
 
 /*
@@ -478,7 +479,13 @@ LibTcgTranslationBlock libtcg_translate_block(LibTcgContext *context,
      */
     int max_insns = TCG_MAX_INSNS;
 
-    TranslationBlock *tb = tcg_tb_alloc(tcg_ctx);
+    /*
+     * libtcg copies the generated IR into caller-owned results and does not
+     * cache host code. Reuse the translation metadata instead of consuming
+     * the finite TCG code region with tcg_tb_alloc on every call.
+     */
+    TranslationBlock *tb = &context->tb;
+    *tb = (TranslationBlock) { 0 };
     tb->pc = pc;
     tb->cs_base = cs_base;
     tb->max_pc = virtual_address + size;

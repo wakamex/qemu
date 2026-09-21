@@ -3894,7 +3894,7 @@ foreach target : target_dirs
       }]
     endif
   elif target.endswith('-libtcg')
-    shared_library('tcg-' + target_name,
+    libtcg = shared_library('tcg-' + target_name,
                    include_directories: target_inc,
                    install: true,
                    objects: lib.extract_all_objects(recursive: true),
@@ -3902,6 +3902,14 @@ foreach target : target_dirs
                    c_args: c_args,
                    link_depends: [block_syms, qemu_syms],
                    link_args: link_args)
+
+    if target_name == 'x86_64'
+      libtcg_repeated = executable('test-libtcg-repeated',
+                                  'tests/unit/test-libtcg-repeated.c',
+                                  include_directories: include_directories('include'),
+                                  link_with: libtcg)
+      test('libtcg-repeated', libtcg_repeated, suite: 'libtcg', timeout: 120)
+    endif
 
     execs = []
   elif target.endswith('-llvm-helpers')
