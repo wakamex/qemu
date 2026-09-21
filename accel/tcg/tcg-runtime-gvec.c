@@ -24,7 +24,7 @@
 #include "tcg/tcg-gvec-desc.h"
 
 
-static inline void clear_high(void *d, intptr_t oprsz, uint32_t desc)
+static inline void clear_high(void *d, intptr_t oprsz, uint32_t desc) REVNG_INLINE
 {
     intptr_t maxsz = simd_maxsz(desc);
     intptr_t i;
@@ -36,7 +36,7 @@ static inline void clear_high(void *d, intptr_t oprsz, uint32_t desc)
     }
 }
 
-void HELPER(gvec_add8)(void *d, void *a, void *b, uint32_t desc)
+void HELPER(gvec_add8)(void *d, void *a, void *b, uint32_t desc) REVNG_INLINE
 {
     intptr_t oprsz = simd_oprsz(desc);
     intptr_t i;
@@ -1014,6 +1014,8 @@ void HELPER(gvec_rotr64v)(void *d, void *a, void *b, uint32_t desc)
     }
     clear_high(d, oprsz, desc);
 }
+
+void HELPER(gvec_eq8)(void *d, void *a, void *b, uint32_t desc) REVNG_INLINE;
 
 #define DO_CMP1(NAME, TYPE, OP)                                            \
 void HELPER(NAME)(void *d, void *a, void *b, uint32_t desc)                \

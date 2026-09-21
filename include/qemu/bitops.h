@@ -333,7 +333,7 @@ static inline uint64_t wswap64(uint64_t h)
  *
  * Returns: the value of the bit field extracted from the input value.
  */
-static inline uint32_t extract32(uint32_t value, int start, int length)
+static inline uint32_t extract32(uint32_t value, int start, int length) REVNG_INLINE
 {
     assert(start >= 0 && length > 0 && length <= 32 - start);
     return (value >> start) & (~0U >> (32 - length));

@@ -43,13 +43,13 @@
 uint32_t simd_desc(uint32_t oprsz, uint32_t maxsz, int32_t data);
 
 /* Extract the max vector size from a descriptor.  */
-static inline intptr_t simd_maxsz(uint32_t desc)
+static inline intptr_t simd_maxsz(uint32_t desc) REVNG_INLINE
 {
     return extract32(desc, SIMD_MAXSZ_SHIFT, SIMD_MAXSZ_BITS) * 8 + 8;
 }
 
 /* Extract the operation size from a descriptor.  */
-static inline intptr_t simd_oprsz(uint32_t desc)
+static inline intptr_t simd_oprsz(uint32_t desc) REVNG_INLINE
 {
     uint32_t f = extract32(desc, SIMD_OPRSZ_SHIFT, SIMD_OPRSZ_BITS);
     intptr_t o = f * 8 + 8;
